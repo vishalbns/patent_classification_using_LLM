@@ -8,6 +8,7 @@ The application is designed to handle HTTP POST requests at the "/predict" endpo
 
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from peft import get_peft_model, PeftConfig
 from pydantic import BaseModel
@@ -27,6 +28,15 @@ print(peft_config)
 model = get_peft_model(base_model, peft_config).to("cpu")
 
 app = FastAPI()
+
+# Allow CORS from all domains
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or specify your Streamlit frontend domain here
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Create a Pydantic model for the request body
 class TextRequest(BaseModel):
