@@ -122,10 +122,10 @@ During the training process, I encountered an issue where the `compute_metrics` 
 
 ### Workaround for Evaluation
 
-To evaluate the model, I used an alternative method:
+To evaluate the model, we can use an alternative method:
 
-1. **Model Predictions**: I called the model’s `predict()` API to generate predictions on the test dataset.
-2. **Comparison**: I compared the predicted labels with the true labels by storing the results and computing metrics manually.
+1. **Model Predictions**: Call the model’s `predict()` API to generate predictions on the test dataset.
+2. **Comparison**: Compare the predicted labels with the true labels by storing the results and computing metrics manually.
 
 Although this method works for evaluation, **I expect the results to be suboptimal**, primarily due to:
 - **Limited Training Epochs**: The model was trained for fewer epochs due to hardware limitations.
