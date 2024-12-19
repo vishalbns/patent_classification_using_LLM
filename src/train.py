@@ -152,6 +152,7 @@ def compute_metrics(p):
     labels = p.label_ids  # Get actual class labels
     accuracy = accuracy_score(labels, preds)  # Calculate accuracy
     f1 = f1_score(labels, preds, average="weighted")  # Calculate weighted F1 score
+    print(f"Accuracy: {accuracy:.4f}, F1: {f1:.4f}")
     return {"accuracy": accuracy, "f1": f1}  # Return metrics as a dictionary
 
 
@@ -190,7 +191,8 @@ EVALUATE MODEL
 
 '''
 
-trainer.evaluate()
+eval_results = trainer.evaluate()
+print(f"Evaluation results: {eval_results}")
 
 '''
 
