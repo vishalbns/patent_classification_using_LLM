@@ -1,4 +1,4 @@
-# Patent Classification with PEFT and LoRA
+# Patent Classification using Llama 3.2-1B LLM
 
 This project focuses on training a patent classification model using the [PEFT](https://huggingface.co/docs/peft/) (Parameter Efficient Fine-Tuning) method with the LoRA (Low-Rank Adaptation) technique. The model is fine-tuned for patent classification, and it is deployed via a FastAPI backend and a Streamlit frontend to make predictions on patent descriptions. 
 
@@ -36,6 +36,8 @@ In this project, we used **LoRA** (Low-Rank Adaptation) to apply parameter-effic
 ### Why Not Quantization?
 
 Initially, I attempted to use **quantization** (through the `bitsandbytes` library) to reduce the model size for efficient deployment. However, since I used a **CPU** (rather than a GPU with CUDA), quantization didn't work as expected. Quantization relies on hardware acceleration, which is not available on a CPU, hence I had to abandon that approach. If I had access to a **CUDA-enabled GPU**, I could have successfully applied quantization for model compression and efficiency.
+
+**Note: Currently bitsandbytes is only supported on CUDA GPU hardwares, support for AMD GPUs and M1 chips (MacOS) is coming soon.**
 
 ### Hyperparameters
 

@@ -148,18 +148,13 @@ training_args = TrainingArguments(
 from sklearn.metrics import accuracy_score, f1_score
 
 def compute_metrics(p):
-    # Get predictions and labels
     preds = p.predictions.argmax(-1)
     labels = p.label_ids
-    
-    # Calculate accuracy and F1 score
     accuracy = accuracy_score(labels, preds)
-    f1 = f1_score(labels, preds, average="weighted")  # Use "weighted" for imbalanced datasets
-    
-    return {
-        "accuracy": accuracy,
-        "f1": f1
-    }
+    f1 = f1_score(labels, preds, average="weighted")
+    print(f"Accuracy: {accuracy}, F1: {f1}")  # Log values during training
+    return {"accuracy": accuracy, "f1": f1}
+
 
 trainer = Trainer(
     model=peft_model,                    # The pre-trained model
@@ -189,6 +184,14 @@ TRAIN MODEL
 '''
 
 tqdm(trainer.train())
+
+'''
+
+EVALUATE MODEL
+
+'''
+
+trainer.evaluate()
 
 '''
 
