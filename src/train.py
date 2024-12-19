@@ -128,7 +128,7 @@ SET MODEL TRAIN PARAMETERS
 
 from sklearn.metrics import accuracy_score, f1_score
 import numpy as np
-
+'''
 def compute_metrics(eval_pred):
     print(next(iter(eval_dataset)))  # Check the structure of the dataset
     print("Inside compute_metrics function.")
@@ -140,7 +140,10 @@ def compute_metrics(eval_pred):
     print(f"Labels: {labels}")
     print(f"Accuracy: {accuracy:.4f}, F1: {f1:.4f}")
     return {"accuracy": accuracy, "f1": f1}
-
+'''
+def compute_metrics(eval_pred):
+    print("eval_pred:", eval_pred)  # This will print the logits and labels tuple
+    return eval_pred
 
 from transformers import Trainer, TrainingArguments
 
