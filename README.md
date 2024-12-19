@@ -85,7 +85,7 @@ Ensure all dependencies are installed before running the scripts. You can instal
 
 ```bash
 pip install -r requirements.txt
-
+```
 
 ### 2. Training the Model
 
@@ -93,37 +93,38 @@ To train the model, run the following command. This script will fine-tune the pr
 
 ```bash
 python src/train.py
+```
 
-2. Starting the FastAPI Server
+### 2. Starting the FastAPI Server
 Once the model is trained, you can start the FastAPI server to serve the model for inference. Run:
-
+```
 bash
-Copy code
 python src/serve.py
+```
 The FastAPI server will start and be hosted at http://localhost:9000. It will accept POST requests with a patent description and return the predicted class.
 
-3. Running the Streamlit Frontend
+### 3. Running the Streamlit Frontend
 To allow users to input patent descriptions via a web interface, run the Streamlit frontend:
 
-bash
-Copy code
+```bash
 streamlit run src/frontend.py
+```
 This will open a browser window with the Streamlit interface where users can input patent descriptions and receive predictions from the model.
 
-Deployment on Google Cloud
+## Deployment on Google Cloud
 To overcome the memory limitations of my local machine, I deployed the training process on a Google Cloud VM with 32GB RAM. This allowed me to fine-tune the Llama-3.2-1B model using PEFT and LoRA.
 
-Future Improvements
-Quantization: Once a CUDA-enabled GPU is available, I will explore applying quantization to reduce the model size for more efficient deployment. This would help with faster inference and lower memory usage.
+## Future Improvements
+**Quantization**: Once a CUDA-enabled GPU is available, I will explore applying quantization to reduce the model size for more efficient deployment. This would help with faster inference and lower memory usage.
 
-Full Dataset: I plan to use the full ccdv/patent-classification dataset for better model performance, as the current model is trained on a small subset.
+**Full Dataset**: I plan to use the full ccdv/patent-classification dataset for better model performance, as the current model is trained on a small subset.
 
-GPU Acceleration: Moving the training process to a GPU environment (preferably with NVIDIA CUDA) would drastically reduce the training time and allow for larger models to be fine-tuned.
+**GPU Acceleration**: Moving the training process to a GPU environment (preferably with NVIDIA CUDA) would drastically reduce the training time and allow for larger models to be fine-tuned.
 
-Model Performance Monitoring: Implementing performance monitoring during model inference, such as logging and analyzing prediction confidence levels, to improve user experience.
+**Model Performance Monitoring**: Implementing performance monitoring during model inference, such as logging and analyzing prediction confidence levels, to improve user experience.
 
-User Feedback: Incorporating a feedback loop where users can submit their classification feedback to further improve the model over time.
+**User Feedback**: Incorporating a feedback loop where users can submit their classification feedback to further improve the model over time.
 
-Acknowledgements
+**Acknowledgements**
 PEFT and LoRA: PEFT documentation
 Transformers Library: Transformers by Hugging Face
