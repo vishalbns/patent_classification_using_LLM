@@ -121,6 +121,17 @@ peft_model.config.pad_token_id = tokenizer.pad_token_id
 print(print_number_of_trainable_model_parameters(peft_model))
 
 '''
+# Force model to use CPU
+device = torch.device('cpu')
+
+# Load model and move to the correct device
+original_model = original_model.to(device)
+peft_model = peft_model.to(device)
+
+# Check which device it's on
+print(f"Model is on {peft_model.device}")
+'''
+'''
 
 SET MODEL TRAIN PARAMETERS
 
@@ -172,17 +183,6 @@ trainer = Trainer(
     tokenizer=tokenizer,                 # Tokenizer
     compute_metrics=compute_metrics     # Custom metrics
 )
-
-
-# Force model to use CPU
-device = torch.device('cpu')
-
-# Load model and move to the correct device
-original_model = original_model.to(device)
-peft_model = peft_model.to(device)
-
-# Check which device it's on
-print(f"Model is on {peft_model.device}")
 
 
 '''
