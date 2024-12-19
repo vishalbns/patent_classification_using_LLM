@@ -149,6 +149,8 @@ from sklearn.metrics import accuracy_score, f1_score
 import numpy as np
 
 def compute_metrics(eval_pred):
+    print(next(iter(eval_dataset)))  # Check the structure of the dataset
+    print("Inside compute_metrics function.")
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis=1)  # Convert logits to predicted labels
     accuracy = accuracy_score(labels, predictions)  # Calculate accuracy
