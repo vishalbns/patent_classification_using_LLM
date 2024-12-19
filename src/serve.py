@@ -17,10 +17,10 @@ import torch
 base_model = AutoModelForSequenceClassification.from_pretrained("meta-llama/Llama-3.2-1B")
 
 # Load the tokenizer
-tokenizer = AutoTokenizer.from_pretrained("./final_model")
+tokenizer = AutoTokenizer.from_pretrained("../final_model")
 
 # Load the PEFT adapter model configuration
-peft_config = PeftConfig.from_pretrained("./final_model")
+peft_config = PeftConfig.from_pretrained("../final_model")
 print(peft_config)
 
 # Apply the PEFT model on top of the base model
