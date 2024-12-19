@@ -194,14 +194,14 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=1,    # Batch size for evaluation
     learning_rate=1e-3,
     logging_dir="./logs",            # Directory for storing logs
-    logging_steps=1,                # Frequency of logging
+    logging_steps=25,                # Frequency of logging
     report_to="tensorboard",         # Log to TensorBoard
     eval_strategy="steps",           # Evaluate every 10 steps
     eval_steps=1,
     do_train=True,
     do_eval=True,
     save_strategy="epoch",           # Save only at the end of each epoch
-    save_total_limit=1,              # Keep only the last 2 checkpoints
+    save_total_limit=25,              # Keep only the last 2 checkpoints
 )
 
 trainer = Trainer(
