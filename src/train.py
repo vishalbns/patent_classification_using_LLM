@@ -143,7 +143,6 @@ training_args = TrainingArguments(
     do_eval=True,
     save_strategy="epoch",           # Save only at the end of each epoch
     save_total_limit=2,              # Keep only the last 2 checkpoints
-    fp16=True,
 )
 
 from sklearn.metrics import accuracy_score, f1_score
