@@ -98,6 +98,7 @@ To train the model, run the following command. This script will fine-tune the pr
 ```bash
 python src/train.py
 ```
+![Model training on GCP VM](images/training.png)
 
 ### 2. Starting the FastAPI Server
 Once the model is trained, you can start the FastAPI server to serve the model for inference. Run:
