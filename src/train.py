@@ -53,7 +53,7 @@ MODEL PREP
 '''
 
 # Check if CUDA is available
-device = "cuda" if torch.backends.cuda.is_available() else "cpu"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 model_id = "meta-llama/Llama-3.2-1B"
 config = AutoConfig.from_pretrained(model_id)
