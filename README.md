@@ -119,8 +119,8 @@ This will open a browser window with the Streamlit interface where users can inp
 
 ![Streamlit Interface Example](images/frontend_screenshot.png)
 
-## Deployment on Google Cloud
-To overcome the memory limitations of my local machine, I deployed the training process on a Google Cloud VM with 32GB RAM. This allowed me to fine-tune the Llama-3.2-1B model using PEFT and LoRA.
+## Deployment on Google Cloud for Training
+To overcome the memory limitations of my local machine, I deployed the training process on a Google Cloud VM with 32GB RAM. This allowed me to fine-tune the Llama-3.2-1B model using PEFT and LoRA. Once the model was trained, I pushed it to GitHub and retrieved it locally to serve on vLLM.
 
 ![GCP console](images/gcp.png)
 
