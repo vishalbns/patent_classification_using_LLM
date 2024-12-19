@@ -148,12 +148,11 @@ training_args = TrainingArguments(
 from sklearn.metrics import accuracy_score, f1_score
 
 def compute_metrics(p):
-    preds = p.predictions.argmax(-1)
-    labels = p.label_ids
-    accuracy = accuracy_score(labels, preds)
-    f1 = f1_score(labels, preds, average="weighted")
-    print(f"Accuracy: {accuracy}, F1: {f1}")  # Log values during training
-    return {"accuracy": accuracy, "f1": f1}
+    preds = p.predictions.argmax(-1)  # Get predicted class labels
+    labels = p.label_ids  # Get actual class labels
+    accuracy = accuracy_score(labels, preds)  # Calculate accuracy
+    f1 = f1_score(labels, preds, average="weighted")  # Calculate weighted F1 score
+    return {"accuracy": accuracy, "f1": f1}  # Return metrics as a dictionary
 
 
 trainer = Trainer(
@@ -183,7 +182,7 @@ TRAIN MODEL
 
 '''
 
-tqdm(trainer.train())
+trainer.train()
 
 '''
 
