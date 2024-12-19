@@ -20,6 +20,7 @@ from tqdm import tqdm
 DATA PREP
 
 '''
+
 ds = load_dataset("ccdv/patent-classification", "patent")
 
 # Print the unique labels in the dataset
@@ -41,8 +42,8 @@ encoded_dataset = ds.map(tokenize_function, batched=True)
 print(encoded_dataset)
 
 # Split the dataset into train and eval sets
-train_dataset = encoded_dataset["train"].select(range(10))
-eval_dataset = encoded_dataset["test"].select(range(1))
+train_dataset = encoded_dataset["train"].select(range(500))
+eval_dataset = encoded_dataset["validation"].select(range(50))
 
 
 '''
@@ -52,8 +53,7 @@ MODEL PREP
 '''
 
 # Check if CUDA is available
-#device = "cuda" if torch.backends.cuda.is_available() else "cpu"
-device = "cpu"
+device = "cuda" if torch.backends.cuda.is_available() else "cpu"
 
 model_id = "meta-llama/Llama-3.2-1B"
 config = AutoConfig.from_pretrained(model_id)
@@ -78,11 +78,21 @@ config = AutoConfig.from_pretrained(model_id)
 config.label2id = {label: idx for idx, label in enumerate(label_names)}
 config.id2label = {idx: label for idx, label in enumerate(label_names)}
 
+''' QUANTIZATION
+
+# Use BitsAndBytesConfig for 8-bit quantization
+from bitsandbytes import nn as bnb
+bnb_config = bnb.BitsAndBytesConfig(
+    load_in_8bit=True,  # Set this to True for 8-bit quantization
+    quantization_method="nf4",  # You can use 'int4' or 'nf4' for quantization
+)
+'''
 # Load the sequence classification model
 original_model = AutoModelForSequenceClassification.from_pretrained(
     model_id,
     config=config,  # Pass the config with num_labels and updated architecture
     torch_dtype=torch.float32,  # Use float16 precision for memory efficiency. does not work with cpu.
+    #quantization_config=bnb_config,
 ).to(device)
 
 # Ensure model is on the correct device
@@ -93,7 +103,7 @@ original_model.config.pad_token_id = tokenizer.pad_token_id
 
 '''
 
-PRINT NUMBER OF PARAMETERS TO TRAIN
+PRINT NUMBER OF PARAMETERS TO TRAIN ORIGINAL MODEL
 
 '''
 
@@ -130,9 +140,17 @@ lora_config = LoraConfig(
 peft_model = get_peft_model(original_model, lora_config)
 peft_model.to(device)  # Ensure it's moved to the correct device
 peft_model.config.pad_token_id = tokenizer.pad_token_id
+
+'''
+
+PRINT NUMBER OF PARAMETERS TO TRAIN LORA
+
+'''
+
 print(print_number_of_trainable_model_parameters(peft_model))
 
 '''
+
 # Force model to use CPU
 device = torch.device('cpu')
 
@@ -143,6 +161,8 @@ peft_model = peft_model.to(device)
 # Check which device it's on
 print(f"Model is on {peft_model.device}")
 '''
+
+
 '''
 
 SET MODEL TRAIN PARAMETERS
@@ -152,6 +172,8 @@ SET MODEL TRAIN PARAMETERS
 from sklearn.metrics import accuracy_score, f1_score
 import numpy as np
 
+#Compute metrics function is not being called by trainer because the peft_model is used not original model. 
+#It is a work in progress issue.
 def compute_metrics(eval_pred):
     print("Inside compute_metrics function.")
     logits, labels = eval_pred
@@ -162,11 +184,7 @@ def compute_metrics(eval_pred):
     print(f"Labels: {labels}")
     print(f"Accuracy: {accuracy:.4f}, F1: {f1:.4f}")
     return {"accuracy": accuracy, "f1": f1}
-'''
-def compute_metrics(eval_pred):
-    print("eval_pred:", eval_pred)  # This will print the logits and labels tuple
-    return eval_pred
-'''
+
 from transformers import Trainer, TrainingArguments
 
 training_args = TrainingArguments(
