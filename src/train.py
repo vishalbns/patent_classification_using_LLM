@@ -180,7 +180,7 @@ training_args = TrainingArguments(
 )
 
 trainer = Trainer(
-    model=peft_model,                    # The pre-trained model
+    model=original_model,                    # The pre-trained model
     args=training_args,                  # Training arguments
     train_dataset=train_dataset,         # Training dataset
     eval_dataset=eval_dataset,           # Evaluation dataset

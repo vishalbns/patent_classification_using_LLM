@@ -24,10 +24,11 @@ class TextRequest(BaseModel):
     text: str
 
 # Define the class names corresponding to the numeric labels
+
 class_names = [
-    "A61 (Human Necessities)", "A01 (Agriculture)", "G06 (Computing; Calculation; Counting)",
-    "H01 (Basic Electric Elements)", "B01 (Physical or Chemical Processes)", "C07 (Organic Chemistry)",
-    "G08 (Signaling)", "F16 (Engineering Elements)", "H04 (Electric Communication Techniques)"
+    'Human Necessities', 'Performing Operations; Transporting', 'Chemistry; Metallurgy', 'Textiles; Paper', 
+    'Fixed Constructions', 'Mechanical Engineering; Lightning; Heating; Weapons; Blasting', 'Physics', 
+    'Electricity', 'General tagging of new or cross-sectional technology'
 ]
 
 @app.post("/predict")
