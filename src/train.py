@@ -37,8 +37,8 @@ encoded_dataset = ds.map(tokenize_function, batched=True)
 print(encoded_dataset)
 
 # Split the dataset into train and eval sets
-train_dataset = encoded_dataset["train"].select(range(1000))
-eval_dataset = encoded_dataset["test"].select(range(100))
+train_dataset = encoded_dataset["train"].select(range(50))
+eval_dataset = encoded_dataset["test"].select(range(5))
 
 
 '''
@@ -130,19 +130,19 @@ from transformers import Trainer, TrainingArguments
 
 training_args = TrainingArguments(
     output_dir="./results",          # Output directory
-    num_train_epochs=2,              # Number of training epochs
-    per_device_train_batch_size=2,   # Batch size for training
-    per_device_eval_batch_size=2,    # Batch size for evaluation
+    num_train_epochs=1,              # Number of training epochs
+    per_device_train_batch_size=1,   # Batch size for training
+    per_device_eval_batch_size=1,    # Batch size for evaluation
     learning_rate=1e-3,
     logging_dir="./logs",            # Directory for storing logs
-    logging_steps=10,                # Frequency of logging
+    logging_steps=1,                # Frequency of logging
     report_to="tensorboard",         # Log to TensorBoard
     eval_strategy="steps",           # Evaluate every 10 steps
-    eval_steps=10,
+    eval_steps=1,
     do_train=True,
     do_eval=True,
     save_strategy="epoch",           # Save only at the end of each epoch
-    save_total_limit=2,              # Keep only the last 2 checkpoints
+    save_total_limit=1,              # Keep only the last 2 checkpoints
 )
 
 from sklearn.metrics import accuracy_score, f1_score
