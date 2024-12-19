@@ -1,3 +1,10 @@
+'''
+This Streamlit application provides a user-friendly interface for patent classification. 
+Users can input a patent description, which is sent to a FastAPI server for processing. 
+The FastAPI backend predicts the patent category using a fine-tuned classification model. 
+If the input is valid, the app displays the predicted class; otherwise, it shows an appropriate error or warning message.
+'''
+
 import streamlit as st
 import requests
 

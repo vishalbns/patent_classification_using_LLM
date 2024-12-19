@@ -1,3 +1,12 @@
+"""
+This FastAPI application serves as the backend for a patent classification system. 
+It uses a fine-tuned model based on Llama-3.2-1B and PEFT (Parameter-Efficient Fine-Tuning) for sequence classification. 
+The app processes incoming requests with patent descriptions, tokenizes the input text, and predicts the patent category using the loaded model. 
+The predicted category is then returned as a response to the client, with class labels mapped to human-readable names. 
+The application is designed to handle HTTP POST requests at the "/predict" endpoint.
+"""
+
+
 from fastapi import FastAPI
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from peft import get_peft_model, PeftConfig

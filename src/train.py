@@ -1,3 +1,15 @@
+"""
+This script fine-tunes a sequence classification model using a dataset of patent descriptions. 
+It employs the Llama-3.2-1B model with PEFT (Parameter-Efficient Fine-Tuning) using LoRA (Low-Rank Adaptation) to 
+reduce the number of trainable parameters from 100% to 0.07%, improving computational efficiency. 
+The dataset is preprocessed and tokenized for training and evaluation. 
+LoRA configuration is applied to specific model layers, enabling lightweight fine-tuning. 
+Metrics like accuracy and F1-score are computed to evaluate model performance. 
+The script uses the Hugging Face Trainer API for training and evaluation, logs progress to TensorBoard, 
+and saves the fine-tuned model for deployment.
+"""
+
+
 from datasets import load_dataset
 import time
 import evaluate
