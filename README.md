@@ -116,6 +116,24 @@ This will open a browser window with the Streamlit interface where users can inp
 ## Deployment on Google Cloud
 To overcome the memory limitations of my local machine, I deployed the training process on a Google Cloud VM with 32GB RAM. This allowed me to fine-tune the Llama-3.2-1B model using PEFT and LoRA.
 
+## Evaluation and Performance
+
+During the training process, I encountered an issue where the `compute_metrics` function did not work properly when using the `peft_model` (the model with LoRA adapters). This issue arises because the `Trainer` class does not support `compute_metrics` for PEFT models, as detailed in [this GitHub issue](https://github.com/huggingface/transformers/issues/29186). The issue occurs because the `peft_model` is an adapter-based model, and not the full model, which prevents direct evaluation using `compute_metrics`.
+
+### Workaround for Evaluation
+
+To evaluate the model, I used an alternative method:
+
+1. **Model Predictions**: I called the model’s `predict()` API to generate predictions on the test dataset.
+2. **Comparison**: I compared the predicted labels with the true labels by storing the results and computing metrics manually.
+
+Although this method works for evaluation, **I expect the results to be suboptimal**, primarily due to:
+- **Limited Training Epochs**: The model was trained for fewer epochs due to hardware limitations.
+- **Subsampled Dataset**: I used a small subset of the dataset (1,000 training samples and 100 test samples) due to compute constraints.
+
+Future improvements will involve training the model on the full dataset and for more epochs to improve the evaluation results.
+
+
 ## Future Improvements
 **Quantization**: Once a CUDA-enabled GPU is available, I will explore applying quantization to reduce the model size for more efficient deployment. This would help with faster inference and lower memory usage.
 
@@ -127,6 +145,6 @@ To overcome the memory limitations of my local machine, I deployed the training 
 
 **User Feedback**: Incorporating a feedback loop where users can submit their classification feedback to further improve the model over time.
 
-**Acknowledgements**
-PEFT and LoRA: PEFT documentation
-Transformers Library: Transformers by Hugging Face
+## Acknowledgements
+PEFT and LoRA: [PEFT documentation](https://huggingface.co/docs/peft/en/developer_guides/lora)
+Transformers Library: [Transformers by Hugging Face](https://huggingface.co/docs/transformers/en/index)
