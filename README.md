@@ -10,20 +10,22 @@ The task involves classifying patent descriptions into one of 9 categories. For 
 
 The dataset used is the [ccdv/patent-classification](https://huggingface.co/datasets/ccdv/patent-classification) dataset, which consists of patent descriptions categorized into 9 classes:
 
-- A61 (Human Necessities)
-- A01 (Agriculture)
-- G06 (Computing; Calculation; Counting)
-- H01 (Basic Electric Elements)
-- B01 (Physical or Chemical Processes)
-- C07 (Organic Chemistry)
-- G08 (Signaling)
-- F16 (Engineering Elements)
-- H04 (Electric Communication Techniques)
+- Human Necessities
+- Performing Operations; Transporting
+- Chemistry; Metallurgy
+- Textiles; Paper
+- Fixed Constructions
+- Mechanical Engineering; Lightning; Weapons; Blasting'
+- Physics
+- F16 Electricity
+- General tagging of new or cross-sectional technology
 
 ### Data Details:
 - **Train records:** 25,000
 - **Validation records:** 5,000
 - **Test records:** 5,000
+
+![Data Class Distribution](images/data_distribution.png)
 
 Due to time and compute constraints, we are using a subset of 1,000 train records and 100 test records in this project.
 
@@ -105,6 +107,8 @@ python src/serve.py
 ```
 The FastAPI server will start and be hosted at http://localhost:9000. It will accept POST requests with a patent description and return the predicted class.
 
+![Postman Interface Example](images/postman_endpoint_test.png)
+
 ### 3. Running the Streamlit Frontend
 To allow users to input patent descriptions via a web interface, run the Streamlit frontend:
 
@@ -112,6 +116,8 @@ To allow users to input patent descriptions via a web interface, run the Streaml
 streamlit run src/frontend.py
 ```
 This will open a browser window with the Streamlit interface where users can input patent descriptions and receive predictions from the model.
+
+![Streamlit Interface Example](images/frontend_screenshot.png)
 
 ## Deployment on Google Cloud
 To overcome the memory limitations of my local machine, I deployed the training process on a Google Cloud VM with 32GB RAM. This allowed me to fine-tune the Llama-3.2-1B model using PEFT and LoRA.

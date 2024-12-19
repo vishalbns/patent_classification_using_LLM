@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # FastAPI server URL
-API_URL = "http://localhost:8000/predict"
+API_URL = "http://localhost:9000/predict"
 
 # Streamlit webpage title
 st.title("Patent Classification Prediction")
