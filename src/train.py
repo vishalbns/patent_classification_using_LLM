@@ -70,6 +70,14 @@ num_labels = len(ds["train"].features["label"].names)
 # Set num_labels in the config
 config.num_labels = num_labels
 
+# Load and configure the model
+label_names = ds["train"].features["label"].names
+
+# Update model configuration with label mappings
+config = AutoConfig.from_pretrained(model_id)
+config.label2id = {label: idx for idx, label in enumerate(label_names)}
+config.id2label = {idx: label for idx, label in enumerate(label_names)}
+
 # Load the sequence classification model
 original_model = AutoModelForSequenceClassification.from_pretrained(
     model_id,
@@ -185,7 +193,6 @@ trainer = Trainer(
     eval_dataset=eval_dataset,           # Evaluation dataset
     tokenizer=tokenizer,                 # Tokenizer
     compute_metrics=compute_metrics,     # Custom metrics
-    label_names=label_names
 )
 
 
