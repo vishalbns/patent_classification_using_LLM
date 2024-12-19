@@ -101,8 +101,7 @@ python src/train.py
 
 ### 2. Starting the FastAPI Server
 Once the model is trained, you can start the FastAPI server to serve the model for inference. Run:
-```
-bash
+```bash
 uvicorn serve:app --host 0.0.0.0 --port 9000
 ```
 The FastAPI server will start and be hosted at http://localhost:9000. It will accept POST requests with a patent description and return the predicted class.
