@@ -126,6 +126,22 @@ SET MODEL TRAIN PARAMETERS
 
 '''
 
+from sklearn.metrics import accuracy_score, f1_score
+import numpy as np
+
+def compute_metrics(eval_pred):
+    print(next(iter(eval_dataset)))  # Check the structure of the dataset
+    print("Inside compute_metrics function.")
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=1)  # Convert logits to predicted labels
+    accuracy = accuracy_score(labels, predictions)  # Calculate accuracy
+    f1 = f1_score(labels, predictions, average="weighted")  # Calculate weighted F1 score
+    print(f"Predictions: {predictions}")
+    print(f"Labels: {labels}")
+    print(f"Accuracy: {accuracy:.4f}, F1: {f1:.4f}")
+    return {"accuracy": accuracy, "f1": f1}
+
+
 from transformers import Trainer, TrainingArguments
 
 training_args = TrainingArguments(
@@ -145,29 +161,13 @@ training_args = TrainingArguments(
     save_total_limit=1,              # Keep only the last 2 checkpoints
 )
 
-from sklearn.metrics import accuracy_score, f1_score
-import numpy as np
-
-def compute_metrics(eval_pred):
-    print(next(iter(eval_dataset)))  # Check the structure of the dataset
-    print("Inside compute_metrics function.")
-    logits, labels = eval_pred
-    predictions = np.argmax(logits, axis=1)  # Convert logits to predicted labels
-    accuracy = accuracy_score(labels, predictions)  # Calculate accuracy
-    f1 = f1_score(labels, predictions, average="weighted")  # Calculate weighted F1 score
-    print(f"Predictions: {predictions}")
-    print(f"Labels: {labels}")
-    print(f"Accuracy: {accuracy:.4f}, F1: {f1:.4f}")
-    return {"accuracy": accuracy, "f1": f1}
-
-
 trainer = Trainer(
     model=peft_model,                    # The pre-trained model
     args=training_args,                  # Training arguments
     train_dataset=train_dataset,         # Training dataset
     eval_dataset=eval_dataset,           # Evaluation dataset
     tokenizer=tokenizer,                 # Tokenizer
-    compute_metrics=compute_metrics,     # Custom metrics
+    compute_metrics=compute_metrics     # Custom metrics
 )
 
 
