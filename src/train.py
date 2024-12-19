@@ -22,6 +22,10 @@ DATA PREP
 '''
 ds = load_dataset("ccdv/patent-classification", "patent")
 
+# Print the unique labels in the dataset
+labels = ds["train"].features["label"].names
+print(labels)
+
 # Load the tokenizer
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
 if tokenizer.pad_token is None:
@@ -139,7 +143,7 @@ SET MODEL TRAIN PARAMETERS
 
 from sklearn.metrics import accuracy_score, f1_score
 import numpy as np
-'''
+
 def compute_metrics(eval_pred):
     print(next(iter(eval_dataset)))  # Check the structure of the dataset
     print("Inside compute_metrics function.")
@@ -155,7 +159,7 @@ def compute_metrics(eval_pred):
 def compute_metrics(eval_pred):
     print("eval_pred:", eval_pred)  # This will print the logits and labels tuple
     return eval_pred
-
+'''
 from transformers import Trainer, TrainingArguments
 
 training_args = TrainingArguments(
@@ -181,7 +185,7 @@ trainer = Trainer(
     train_dataset=train_dataset,         # Training dataset
     eval_dataset=eval_dataset,           # Evaluation dataset
     tokenizer=tokenizer,                 # Tokenizer
-    compute_metrics=compute_metrics     # Custom metrics
+    compute_metrics=compute_metrics,     # Custom metrics
 )
 
 
@@ -192,7 +196,7 @@ TRAIN MODEL
 '''
 
 trainer.train()
-
+print(f"Trainer: {trainer}")
 '''
 
 EVALUATE MODEL
