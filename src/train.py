@@ -146,14 +146,15 @@ training_args = TrainingArguments(
 )
 
 from sklearn.metrics import accuracy_score, f1_score
+import numpy as np
 
-def compute_metrics(p):
-    preds = p.predictions.argmax(-1)  # Get predicted class labels
-    labels = p.label_ids  # Get actual class labels
-    accuracy = accuracy_score(labels, preds)  # Calculate accuracy
-    f1 = f1_score(labels, preds, average="weighted")  # Calculate weighted F1 score
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=1)  # Convert logits to predicted labels
+    accuracy = accuracy_score(labels, predictions)  # Calculate accuracy
+    f1 = f1_score(labels, predictions, average="weighted")  # Calculate weighted F1 score
     print(f"Accuracy: {accuracy:.4f}, F1: {f1:.4f}")
-    return {"accuracy": accuracy, "f1": f1}  # Return metrics as a dictionary
+    return {"accuracy": accuracy, "f1": f1}
 
 
 trainer = Trainer(
