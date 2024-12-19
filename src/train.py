@@ -153,6 +153,8 @@ def compute_metrics(eval_pred):
     predictions = np.argmax(logits, axis=1)  # Convert logits to predicted labels
     accuracy = accuracy_score(labels, predictions)  # Calculate accuracy
     f1 = f1_score(labels, predictions, average="weighted")  # Calculate weighted F1 score
+    print(f"Predictions: {predictions}")
+    print(f"Labels: {labels}")
     print(f"Accuracy: {accuracy:.4f}, F1: {f1:.4f}")
     return {"accuracy": accuracy, "f1": f1}
 
