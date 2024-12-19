@@ -24,7 +24,7 @@ ds = load_dataset("ccdv/patent-classification", "patent")
 
 # Print the unique labels in the dataset
 label_names = ds["train"].features["label"].names
-print(labels)
+print(label_names)
 
 # Load the tokenizer
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
