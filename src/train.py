@@ -23,7 +23,7 @@ DATA PREP
 ds = load_dataset("ccdv/patent-classification", "patent")
 
 # Print the unique labels in the dataset
-labels = ds["train"].features["label"].names
+label_names = ds["train"].features["label"].names
 print(labels)
 
 # Load the tokenizer
@@ -145,7 +145,6 @@ from sklearn.metrics import accuracy_score, f1_score
 import numpy as np
 
 def compute_metrics(eval_pred):
-    print(next(iter(eval_dataset)))  # Check the structure of the dataset
     print("Inside compute_metrics function.")
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis=1)  # Convert logits to predicted labels
@@ -180,12 +179,13 @@ training_args = TrainingArguments(
 )
 
 trainer = Trainer(
-    model=original_model,                    # The pre-trained model
+    model=peft_model,                    # The pre-trained model
     args=training_args,                  # Training arguments
     train_dataset=train_dataset,         # Training dataset
     eval_dataset=eval_dataset,           # Evaluation dataset
     tokenizer=tokenizer,                 # Tokenizer
     compute_metrics=compute_metrics,     # Custom metrics
+    label_names=label_names
 )
 
 
