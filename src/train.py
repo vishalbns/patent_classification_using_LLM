@@ -37,8 +37,8 @@ encoded_dataset = ds.map(tokenize_function, batched=True)
 print(encoded_dataset)
 
 # Split the dataset into train and eval sets
-train_dataset = encoded_dataset["train"].select(range(100))
-eval_dataset = encoded_dataset["test"].select(range(10))
+train_dataset = encoded_dataset["train"].select(range(1000))
+eval_dataset = encoded_dataset["test"].select(range(100))
 
 
 '''
@@ -47,8 +47,8 @@ MODEL PREP
 
 '''
 
-# Check if MPS (Metal Performance Shaders) is available for M1 Pro GPU
-#device = "cpu" if torch.backends.mps.is_available() else "cpu"
+# Check if CUDA is available
+#device = "cuda" if torch.backends.cuda.is_available() else "cpu"
 device = "cpu"
 
 model_id = "meta-llama/Llama-3.2-1B"
@@ -70,7 +70,7 @@ config.num_labels = num_labels
 original_model = AutoModelForSequenceClassification.from_pretrained(
     model_id,
     config=config,  # Pass the config with num_labels and updated architecture
-    torch_dtype=torch.float32,  # Use float16 precision for memory efficiency
+    torch_dtype=torch.float16,  # Use float16 precision for memory efficiency
 ).to(device)
 
 # Ensure model is on the correct device
@@ -128,32 +128,39 @@ SET MODEL TRAIN PARAMETERS
 
 from transformers import Trainer, TrainingArguments
 
-# Include evaluation during training
 training_args = TrainingArguments(
     output_dir="./results",          # Output directory
-    num_train_epochs=1,              # Number of training epochs
-    per_device_train_batch_size=1,   # Batch size for training
-    per_device_eval_batch_size=1,    # Batch size for evaluation
-    warmup_steps=500,                # Number of warmup steps for learning rate scheduler
-    weight_decay=0.01,               # Strength of weight decay
+    num_train_epochs=2,              # Number of training epochs
+    per_device_train_batch_size=2,   # Batch size for training
+    per_device_eval_batch_size=2,    # Batch size for evaluation
+    learning_rate=1e-3,
     logging_dir="./logs",            # Directory for storing logs
     logging_steps=10,                # Frequency of logging
     report_to="tensorboard",         # Log to TensorBoard
-    eval_strategy="steps",     # Evaluate at the end of each epoch
+    eval_strategy="steps",           # Evaluate every 10 steps
+    eval_steps=10,
     do_train=True,
     do_eval=True,
-    save_strategy="steps",  # Save at every step
-    save_steps=100,
-    learning_rate=1e-3,
+    save_strategy="epoch",           # Save only at the end of each epoch
+    save_total_limit=2,              # Keep only the last 2 checkpoints
+    fp16=True,
 )
 
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 
 def compute_metrics(p):
+    # Get predictions and labels
     preds = p.predictions.argmax(-1)
     labels = p.label_ids
-    return accuracy_score(labels, preds)
-
+    
+    # Calculate accuracy and F1 score
+    accuracy = accuracy_score(labels, preds)
+    f1 = f1_score(labels, preds, average="weighted")  # Use "weighted" for imbalanced datasets
+    
+    return {
+        "accuracy": accuracy,
+        "f1": f1
+    }
 
 trainer = Trainer(
     model=peft_model,                    # The pre-trained model
@@ -163,6 +170,7 @@ trainer = Trainer(
     tokenizer=tokenizer,                 # Tokenizer
     compute_metrics=compute_metrics,     # Custom metrics
 )
+
 
 # Force model to use CPU
 device = torch.device('cpu')
@@ -190,4 +198,4 @@ SAVE MODEL
 '''
 
 # Save the final model
-trainer.save_model("./final_model")
+trainer.save_model("../final_model")
