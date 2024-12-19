@@ -122,6 +122,9 @@ This will open a browser window with the Streamlit interface where users can inp
 ## Deployment on Google Cloud
 To overcome the memory limitations of my local machine, I deployed the training process on a Google Cloud VM with 32GB RAM. This allowed me to fine-tune the Llama-3.2-1B model using PEFT and LoRA.
 
+![GCP console](images/gcp.png)
+
+
 ## Evaluation and Performance
 
 During the training process, I encountered an issue where the `compute_metrics` function did not work properly when using the `peft_model` (the model with LoRA adapters). This issue arises because the `Trainer` class does not support `compute_metrics` for PEFT models, as detailed in [this GitHub issue](https://github.com/huggingface/transformers/issues/29186). The issue occurs because the `peft_model` is an adapter-based model, and not the full model, which prevents direct evaluation using `compute_metrics`.
