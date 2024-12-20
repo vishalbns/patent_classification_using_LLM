@@ -27,7 +27,7 @@ The dataset used is the [ccdv/patent-classification](https://huggingface.co/data
 
 ![Data Class Distribution](images/data_distribution.png)
 
-Due to time and compute constraints, we are using a subset of 1,000 train records and 100 test records in this project.
+Due to time and compute constraints, we are using a subset of 500 train records and 50 test records in this project.
 
 ## Model Architecture
 
