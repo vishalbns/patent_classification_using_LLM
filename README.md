@@ -33,7 +33,7 @@ Due to time and compute constraints, I am using a subset of 500 train records an
 
 ### LoRA (Low-Rank Adaptation)
 
-In this project, we used **LoRA** (Low-Rank Adaptation) to apply parameter-efficient fine-tuning to the pre-trained Llama-3.2-1B model. LoRA helps improve the efficiency of fine-tuning large models by reducing the number of trainable parameters, focusing on low-rank updates to certain weight matrices in the model. This allows for faster training without compromising performance.
+In this project, I used **LoRA** (Low-Rank Adaptation) to apply parameter-efficient fine-tuning to the pre-trained Llama-3.2-1B model. LoRA helps improve the efficiency of fine-tuning large models by reducing the number of trainable parameters, focusing on low-rank updates to certain weight matrices in the model. This allows for faster training without compromising performance.
 
 ### Why Not Quantization?
 
